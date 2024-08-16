@@ -3,24 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Speech Submission</title>
-    <link rel="stylesheet" href="./css/style.css?v=002">
+    <title>Submit Your Speech</title>
+    <!-- Add Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js"></script>
+    <script src="script.js" defer></script>
 </head>
 <body>
+    <h1>Submit Your Speech</h1>
     <form id="speechForm">
-        <input type="text" id="name" placeholder="Your Name" required />
-        <textarea id="speech" placeholder="Your Speech" required></textarea>
-        <button type="submit">Submit</button>
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+        <br><br>
+        <label for="text">Speech:</label>
+        <textarea id="text" name="text" rows="10" cols="30" required></textarea>
+        <br><br>
+        <button type="button" onclick="submitSpeech()">Submit</button>
     </form>
 
-    <ul id="speechList"></ul>
-
-    <!-- Firebase App (the core Firebase SDK) -->
-    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js"></script>
-    <!-- Add Firebase products that you want to use -->
-    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js"></script>
-
-    <!-- Your Firebase config and app logic -->
-    <script src="./js/app.js?v=002"></script>
+    <h2>List of Speeches</h2>
+    <div id="speechList"></div>
 </body>
 </html>
