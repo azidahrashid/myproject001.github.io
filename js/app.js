@@ -1,5 +1,5 @@
 // app.js
-import { db } from './firebase-config.js';
+import { db } from './js/firebase-config.js';
 import { collection, addDoc, deleteDoc, onSnapshot, orderBy, serverTimestamp, doc } from 'https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js';
 
 document.getElementById('speechForm').addEventListener('submit', submitSpeech);
