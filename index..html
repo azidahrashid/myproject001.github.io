@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speech Submission</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Submit Your Speech</h1>
+    <form id="speechForm">
+        <input type="text" id="name" placeholder="Your Name" required />
+        <textarea id="speech" placeholder="Your Speech" required></textarea>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h2>Speech List</h2>
+    <ul id="speechList"></ul>
+
+    <script src="/js/firebase-config.js"></script> <!-- Include Firebase -->
+    <script src="/js/app.js"></script>
+</body>
+</html>
