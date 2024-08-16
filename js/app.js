@@ -1,7 +1,7 @@
-// Ensure the Firebase CDN scripts are included in your HTML
+// Ensure the Firebase SDK scripts are included before this script
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Initialize Firebase
+    // Firebase configuration
     const firebaseConfig = {
         apiKey: "AIzaSyBx97x-JufARMMPekWkRGT_6Flfid2DDR8",
         authDomain: "vydamore-ea949.firebaseapp.com",
@@ -13,8 +13,11 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // Initialize Firebase
-    const app = firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore(app);
+    if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
+    }
+
+    const db = firebase.firestore();
 
     document.getElementById('speechForm').addEventListener('submit', async (event) => {
         event.preventDefault();
