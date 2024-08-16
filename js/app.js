@@ -1,6 +1,6 @@
-// app.js
-import { db } from './js/firebase-config.js';
-import { collection, addDoc, deleteDoc, onSnapshot, orderBy, serverTimestamp, doc } from 'https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js';
+// Using Firebase global namespace
+const app = firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore(app);
 
 document.getElementById('speechForm').addEventListener('submit', submitSpeech);
 
@@ -11,10 +11,10 @@ async function submitSpeech(event) {
     const speech = document.getElementById('speech').value;
 
     try {
-        await addDoc(collection(db, "speeches"), {
+        await db.collection("speeches").add({
             name: name,
             speech: speech,
-            timestamp: serverTimestamp()
+            timestamp: firebase.firestore.FieldValue.serverTimestamp()
         });
         
         document.getElementById('name').value = '';
@@ -45,7 +45,7 @@ function renderSpeech(doc) {
     del.addEventListener('click', async (event) => {
         let id = event.target.parentElement.getAttribute('data-id');
         try {
-            await deleteDoc(doc(db, 'speeches', id));
+            await db.collection('speeches').doc(id).delete();
         } catch (error) {
             console.error("Error removing document: ", error);
         }
@@ -53,8 +53,7 @@ function renderSpeech(doc) {
 }
 
 // Real-time listener
-const speechesCol = collection(db, 'speeches');
-onSnapshot(orderBy(speechesCol, 'timestamp'), snapshot => {
+db.collection('speeches').orderBy('timestamp').onSnapshot(snapshot => {
     let changes = snapshot.docChanges();
     changes.forEach(change => {
         if (change.type == 'added') {
