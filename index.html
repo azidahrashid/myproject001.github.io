@@ -18,43 +18,25 @@
 <body class="container" style="margin-top: 50px;
 	width: 50%; height:auto;">
 	
-	<h2 class="text-primary" style=
-		"margin-left: 15px; margin-bottom: 10px">
-		Hey There,Help Us In Collecting Data
-	</h2>
-	
-	<form class="container" id="contactForm">
-		<div class="card">
-			<div class="card-body">
-				<div class="form-group">
-					<label for="exampleFormControlInput1">
-						Enter Your Name
-					</label>
-					
-					<input type="text" class="form-control"
-					id="name" placeholder="Enter your name">
-				</div>
+    <h1>Submit Your Speech</h1>
+    <form id="speechForm">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+        <br><br>
+        <label for="text">Speech:</label>
+        <textarea id="text" name="text" rows="10" cols="30" required></textarea>
+        <br><br>
+        <button type="button" onclick="submitSpeech()">Submit</button>
+    </form>
 
-				<div class="form-group">
-					<label for="exampleFormControlInput1">
-						Email address
-					</label>
-					
-					<input type="email" class="form-control"
-					id="email" placeholder="name@example.com">
-				</div>
-			</div>
-			<button type="submit" class="btn btn-primary"
-				style="margin-left: 15px; margin-top: 10px">
-				Submit
-			</button>
-		</div>
-	</form>
+    <h2>List of Speeches</h2>
+    <div id="speechList"></div>
 
 	<script src=
 "https://www.gstatic.com/firebasejs/3.7.4/firebase.js">
 	</script>
-	
+	<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
 	<script>
 		let firebaseConfig = {
             apiKey: "AIzaSyBx97x-JufARMMPekWkRGT_6Flfid2DDR8",
@@ -68,38 +50,100 @@
             // measurementId: "G-0H8E7EQZ9M"
 		};
 
-		firebase.initializeApp(firebaseConfig);
+		// Initialize Realtime Database
+const database = firebase.database();
 
-		let messagesRef = firebase.database()
-			.ref('Collected Data');
-		
-		document.getElementById('contactForm')
-			.addEventListener('submit', submitForm);
+// Function to submit the speech
+function submitSpeech() {
+    const name = document.getElementById('name').value;
+    const text = document.getElementById('text').value;
 
-		function submitForm(e) {
-			e.preventDefault();
+    if (name && text) {
+        // Get a new key for the speech
+        const newSpeechRef = database.ref('speeches').push();
+        // Store the speech
+        newSpeechRef.set({
+            name: name,
+            text: text
+        });
+        // Clear the form
+        document.getElementById('speechForm').reset();
+    } else {
+        alert('Please fill out both fields.');
+    }
+}
 
-			// Get values
-			let name = getInputVal('name');
-			let email = getInputVal('email');
+// Function to display the list of speeches
+function displaySpeeches() {
+    const speechList = document.getElementById('speechList');
+    speechList.innerHTML = ''; // Clear the list before updating
 
-			saveMessage(name, email);
-			document.getElementById('contactForm').reset();
-		}
+    // Get all speeches
+    database.ref('speeches').once('value', snapshot => {
+        snapshot.forEach(childSnapshot => {
+            const speech = childSnapshot.val();
+            const speechItem = document.createElement('div');
+            speechItem.innerHTML = `<strong>${speech.name}:</strong> <p>${speech.text}</p>`;
+            speechList.appendChild(speechItem);
+        });
+    });
+}
 
-		// Function to get form values
-		function getInputVal(id) {
-			return document.getElementById(id).value;
-		}
+// Load speeches when the page is loaded
+window.onload = displaySpeeches;
 
-		// Save message to firebase
-		function saveMessage(name, email) {
-			let newMessageRef = messagesRef.push();
-			newMessageRef.set({
-				name: name,
-				email: email,
-			});
-		}
+
+
+
+
+        // Function to load speeches from localStorage
+function loadSpeeches() {
+    const storedSpeeches = localStorage.getItem('speeches');
+    if (storedSpeeches) {
+        speeches = JSON.parse(storedSpeeches);
+    }
+    displaySpeeches();
+}
+
+// Function to save speeches to localStorage
+function saveSpeeches() {
+    localStorage.setItem('speeches', JSON.stringify(speeches));
+}
+
+// Function to submit the speech
+function submitSpeech() {
+    const name = document.getElementById('name').value;
+    const text = document.getElementById('text').value;
+
+    if (name && text) {
+        // Store the speech
+        speeches.push({ name, text });
+        // Save to localStorage
+        saveSpeeches();
+        // Clear the form
+        document.getElementById('speechForm').reset();
+        // Update the speech list
+        displaySpeeches();
+    } else {
+        alert('Please fill out both fields.');
+    }
+}
+
+// Function to display the list of speeches
+function displaySpeeches() {
+    const speechList = document.getElementById('speechList');
+    speechList.innerHTML = ''; // Clear the list before updating
+
+    speeches.forEach(speech => {
+        const speechItem = document.createElement('div');
+        speechItem.innerHTML = `<strong>${speech.name}:</strong> <p>${speech.text}</p>`;
+        speechList.appendChild(speechItem);
+    });
+}
+
+// Load speeches when the page is loaded
+window.onload = loadSpeeches;
+
 	</script>
 </body>
 
