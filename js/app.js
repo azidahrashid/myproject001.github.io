@@ -77,7 +77,6 @@ function displayRSVPs() {
         });
     });
 }
-
 // Load speeches and RSVPs on page load
 document.addEventListener('DOMContentLoaded', () => {
     displaySpeeches();
