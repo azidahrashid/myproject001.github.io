@@ -1,10 +1,12 @@
+
+
 // Function to submit the speech
 function submitSpeech() {
     const name = document.getElementById('name').value.trim();
     const text = document.getElementById('text').value.trim();
 
     if (name && text) {
-        // Add speech to Firestore
+        // Add Speech to Firestore
         db.collection('speeches').add({
             name: name,
             text: text,
@@ -36,7 +38,6 @@ function displaySpeeches() {
         });
     });
 }
-
 
 // Function to submit the RSVP
 function submitRSVP() {
@@ -77,11 +78,8 @@ function displayRSVPs() {
     });
 }
 
-
 // Load speeches and RSVPs on page load
 document.addEventListener('DOMContentLoaded', () => {
     displaySpeeches();
     displayRSVPs();
 });
-
-
