@@ -32,7 +32,9 @@
         
 
 </head>
-
+<div class="pre-loader gradient-color">
+    <div class="loader"></div>
+</div>
 <body class="container">
     <h1>Submit Your Speech</h1>
     <form id="speechForm">
@@ -66,9 +68,17 @@
     
     
     <script src="./js/app.js?v=002"></script>
+    <script src='./js/jquery-3.2.1.min.js' type="text/javascript"></script>
+    <script src='./js/aos.min.js' type="text/javascript"></script>
+<script>
+var $window = $(window);
 
-
-
+//Fading Out Loader
+$window.on("load", function() {
+    $(".pre-loader").fadeOut("slow");
+    AOS.refresh();
+});
+</script>
 
 </body>
 </html>
